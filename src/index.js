@@ -15,7 +15,7 @@ export default {
         return new Response("Rate limit exceeded", { status: 429 });
       }
 
-      return await logCalculation(request, clientIP, env);
+      return await logCalculation(request, env);
     }
     
     // Tools Index
@@ -32,20 +32,21 @@ export default {
   }
 };
 
-async function logCalculation(request, clientIP, env) {
+async function logCalculation(request, env) {
   try {
-    const data = await request.json();    
+    const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
+    const data = await request.json();
 
     await env.DB.prepare(`
       INSERT INTO unit_price_calcs 
         (price, weight, discount, unit, final_price_per_unit, client_ip)
       VALUES (?, ?, ?, ?, ?, ?)
     `).bind(
-      data.price,
-      data.weight,
+      data.price || 0,
+      data.weight || 0,
       data.discount || 0,
-      data.unit,
-      data.final_price_per_unit,
+      data.unit || 0,
+      data.final_price_per_unit || 0,
       clientIP
     ).run();
 
@@ -53,6 +54,6 @@ async function logCalculation(request, clientIP, env) {
 
   } catch (err) {
     console.error("Logging error:", err);
-    return Response.json({ success: false }); // Don't break the UI
+    return Response.json({ success: false });
   }
 }
