@@ -6,8 +6,8 @@ self.addEventListener('install', (event) => {
       return cache.addAll([
         '/calculator',
         '/manifest.json',
-        '/icon-192.png',
-        '/icon-512.png'
+        '/upcalc (1).png',
+        '/upcalc (2).png'
       ]);
     })
   );
