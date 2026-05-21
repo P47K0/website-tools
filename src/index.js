@@ -4,17 +4,6 @@ export default {
     const path = url.pathname.toLowerCase();
 
     // ====================== ROUTING ======================
-
-    // Tools Index
-    if (path === "/" || path === "") {
-      return env.ASSETS.fetch(new URL("/index.html", request.url));
-    }
-
-    // Unit Price Calculator
-    if (path === "/calculator" || path === "/calculator.html") {
-      return env.ASSETS.fetch(new URL("/calculator.html", request.url));
-    }
-
     if (path === "/api/log-calculation" && request.method === "POST") {
       const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
 
@@ -28,7 +17,17 @@ export default {
 
       return await logCalculation(request, clientIP, env);
     }
+    
+    // Tools Index
+    if (path === "/" || path === "") {
+      return env.ASSETS.fetch(new URL("/index.html", request.url));
+    }
 
+    // Unit Price Calculator
+    if (path === "/calculator" || path === "/calculator.html") {
+      return env.ASSETS.fetch(new URL("/calculator.html", request.url));
+    }
+    
     return new Response("Not Found", { status: 404 });
   }
 };
