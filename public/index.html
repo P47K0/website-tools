@@ -5,26 +5,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Free online unit price calculator for supermarket shopping. Calculate price per kg, per 100g, per liter and more.">
-  <meta name="keywords" content="unit price calculator, price per kg, supermarket calculator, price comparison tool">
-  <title>Tools | Koorevaar</title>  
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 py-12">
-  <div class="max-w-3xl mx-auto px-6">
-    <h1 class="text-4xl font-bold text-center mb-2">Personal Tools</h1>
-    <p class="text-center text-gray-600 mb-12">Small utilities I use regularly</p>
+  <title>Tools | Koorevaar</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --shadow: 0 10px 25px rgba(0,0,0,0.08);
+      --shadow-hover: 0 16px 35px rgba(0,0,0,0.12);
+      --radius: 24px;
+    }
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <a href="/calculator" class="block bg-white rounded-3xl shadow hover:shadow-lg transition p-8 group">
-        <div class="text-5xl mb-6">🧮</div>
-        <h3 class="text-2xl font-semibold mb-3 group-hover:text-blue-600">Unit Price Calculator</h3>
-        <p class="text-gray-600">Calculate real price per gram, kg, liter, or piece — perfect for supermarket shopping. A PWA which you can install and use offline</p>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 768px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      margin: 0 0 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin: 0 0 3rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      color: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card:hover h2 {
+      color: var(--accent);
+    }
+
+    .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.5rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      margin-top: 4rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Personal Tools</h1>
+    <p class="subtitle">Small utilities I use regularly</p>
+
+    <div class="grid">
+      <a href="/calculator" class="card">
+        <div class="icon">🧮</div>
+        <h2>Unit Price Calculator</h2>
+        <p>Calculate real price per gram, kg, liter, or piece — perfect for supermarket shopping. Install it and use it offline.</p>
       </a>
     </div>
 
-    <p class="text-center text-xs text-gray-500 mt-16">
-      Built with Cloudflare Workers
-    </p>
+    <footer>Built with Cloudflare Workers</footer>
   </div>
 </body>
 </html>
