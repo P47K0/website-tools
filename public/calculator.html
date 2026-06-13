@@ -5,43 +5,170 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Unit price calculator PWA, can be used offline">
   <meta name="keywords" content="Unit Price, PWA, kg, gram, liter, piece, discount, weight">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512' fill='%231e3a8a'%3E%3Cpath d='M70.8-6.7c5.4-5.4 13.8-6.2 20.2-2L209.9 70.5c8.9 5.9 14.2 15.9 14.2 26.6l0 49.6 90.8 90.8c33.3-15 73.9-8.9 101.2 18.5L542.2 382.1c18.7 18.7 18.7 49.1 0 67.9l-60.1 60.1c-18.7 18.7-49.1 18.7-67.9 0L288.1 384c-27.4-27.4-33.5-67.9-18.5-101.2l-90.8-90.8-49.6 0c-10.7 0-20.7-5.3-26.6-14.2L23.4 58.9c-4.2-6.3-3.4-14.8 2-20.2L70.8-6.7zm145 303.5c-6.3 36.9 2.3 75.9 26.2 107.2l-94.9 95c-28.1 28.1-73.7 28.1-101.8 0s-28.1-73.7 0-101.8l135.4-135.5 35.2 35.1zM384.1 0c20.1 0 39.4 3.7 57.1 10.5 10 3.8 11.8 16.5 4.3 24.1L388.8 91.3c-3 3-4.7 7.1-4.7 11.3l0 41.4c0 8.8 7.2 16 16 16l41.4 0c4.2 0 8.3-1.7 11.3-4.7l56.7-56.7c7.6-7.5 20.3-5.7 24.1 4.3 6.8 17.7 10.5 37 10.5 57.1 0 43.2-17.2 82.3-45 111.1l-49.1-49.1c-33.1-33-78.5-45.7-121.1-38.4l-56.8-56.8 0-29.7-.2-5c-.8-12.4-4.4-24.3-10.5-34.9 29.4-35 73.4-57.2 122.7-57.3z'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" href="/icon-192.png" type="image/png">
   <title>Unit Price Calculator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 min-h-screen">
-  <div class="max-w-md mx-auto p-4">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-active: #1e40af;
+      --success-bg: #f0fdf4;
+      --success-border: #dcfce7;
+      --success-text: #15803d;
+      --error: #ef4444;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
+    }
 
-    <h1 class="text-4xl font-bold text-center mb-2">Calculate unit price</h1>
-    
-    <div class="bg-white rounded-3xl shadow-sm p-6 mt-4">
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-medium text-gray-500 mb-1">Total Price (€)</label>
-          <input type="number" id="price" step="0.01" value="2.99" 
-            class="w-full px-4 py-3.5 text-2xl border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500">
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .wrap {
+      max-width: 28rem;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+      margin: 0.5rem 0 0;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      font-size: 1.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      outline: none;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 2rem;
+      border: 0;
+      border-radius: var(--radius-lg);
+      background: var(--primary);
+      color: white;
+      font-size: 1.125rem;
+      font-weight: 600;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    button:hover { background: var(--primary-hover); }
+    button:active { background: var(--primary-active); }
+
+    #result {
+      margin-top: 2rem;
+      text-align: center;
+      min-height: 100px;
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 0.95rem;
+    }
+
+    .success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1rem;
+    }
+
+    .success .label {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .success .value {
+      color: var(--success-text);
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-top: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Calculate unit price</h1>
+
+    <div class="card">
+      <div class="grid">
+        <div class="field">
+          <label for="price">Total Price (€)</label>
+          <input type="number" id="price" step="0.01" value="2.99">
         </div>
-        
-        <div>
-          <label class="block text-xs font-medium text-gray-500 mb-1">Weight / QTY</label>
-          <input type="number" id="weight" step="0.01" value="500" 
-            class="w-full px-4 py-3.5 text-2xl border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500">
+
+        <div class="field">
+          <label for="weight">Weight / QTY</label>
+          <input type="number" id="weight" step="0.01" value="500">
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mt-4">
-        <div>
-          <label class="block text-xs font-medium text-gray-500 mb-1">Discount (%)</label>
-          <input type="number" id="discount" value="0" min="0" max="100" 
-            class="w-full px-4 py-3.5 text-2xl border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500">
+      <div class="grid" style="margin-top: 1rem;">
+        <div class="field">
+          <label for="discount">Discount (%)</label>
+          <input type="number" id="discount" value="0" min="0" max="100">
         </div>
-        
-        <div>
-          <label class="block text-xs font-medium text-gray-500 mb-1">Unit</label>
-          <select id="unit" 
-            class="w-full px-4 py-3.5 text-2xl border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500">
+
+        <div class="field">
+          <label for="unit">Unit</label>
+          <select id="unit">
             <option value="1000">kg</option>
             <option value="100" selected>100g</option>
             <option value="1">gram</option>
@@ -51,14 +178,9 @@
         </div>
       </div>
 
-      <button onclick="calculatePrice()" 
-        class="mt-8 w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-4 rounded-2xl text-lg transition">
-        Calculate
-      </button>
-
-      <div id="result" class="mt-8 text-center min-h-[100px]"></div>
+      <button id="calcBtn" type="button">Calculate</button>
+      <div id="result"></div>
     </div>
-
   </div>
 
   <script>
@@ -67,27 +189,27 @@
       const weight = parseFloat(document.getElementById('weight').value) || 0;
       const discount = parseFloat(document.getElementById('discount').value) || 0;
       const unit = parseFloat(document.getElementById('unit').value);
-
       const resultDiv = document.getElementById('result');
 
       if (price <= 0 || weight <= 0) {
-        resultDiv.innerHTML = `<p class="text-red-500 text-sm">Enter price and weight</p>`;
+        resultDiv.innerHTML = '<p class="error">Enter price and weight</p>';
         return;
       }
 
-      let finalPrice = price * (1 - discount / 100);
+      const finalPrice = price * (1 - discount / 100);
       const pricePerUnit = (finalPrice / weight) * unit;
 
       resultDiv.innerHTML = `
-        <div class="bg-green-50 border border-green-100 rounded-2xl py-6">
-          <p class="text-sm text-gray-600">Price per unit</p>
-          <p class="text-4xl font-bold text-green-700 mt-1">€ ${pricePerUnit.toFixed(4)}</p>
+        <div class="success">
+          <div class="label">Price per unit</div>
+          <div class="value">€ ${pricePerUnit.toFixed(4)}</div>
         </div>
       `;
     }
 
-    // Calculate on Enter
-    document.addEventListener('keypress', (e) => {
+    document.getElementById('calcBtn').addEventListener('click', calculatePrice);
+
+    document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') calculatePrice();
     });
   </script>
