@@ -1,43 +1,51 @@
-const CACHE_NAME = 'pricecalc-v3';   // ← Increase version when you update
+const CACHE_NAME = 'pricecalc-v4';
+const OFFLINE_PAGE = '/calculator.html';
+
+const APP_SHELL = [
+  '/calculator',
+  '/calculator.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
+];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([
-        '/calculator',
-        '/calculator.html',
-        '/index.html',
-        '/manifest.json',
-        '/icon-192.png',
-        '/icon-512.png'
-      ]);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
+  const request = event.request;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request).catch(async () => {
+        return (
+          await caches.match('/calculator.html') ||
+          await caches.match('/calculator')
+        );
+      })
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }).catch(() => {
-      // Offline fallback - serve calculator page
-      if (event.request.destination === 'document') {
-        return caches.match('/calculator.html');
-      }
+    caches.match(request, { ignoreSearch: true }).then((cached) => {
+      return cached || fetch(request);
     })
   );
 });
