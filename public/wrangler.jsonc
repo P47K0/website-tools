@@ -5,12 +5,15 @@
   "observability": {
     "enabled": true
   },
-  "assets": {
-    "directory": "."
-  },
   "compatibility_flags": [
     "nodejs_compat"
   ],
+
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"          // Required for env.ASSETS
+  },
+
   "d1_databases": [
     {
       "binding": "DB",
