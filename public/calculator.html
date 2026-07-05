@@ -205,6 +205,18 @@
           <div class="value">€ ${pricePerUnit.toFixed(4)}</div>
         </div>
       `;
+
+      fetch('/api/log-calculation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          price: price,
+          weight: weight,
+          discount: discount,
+          unit: unit,
+          final_price_per_unit: pricePerUnit
+        })
+      }).catch(() => {}); // Silent fail
     }
 
     document.getElementById('calcBtn').addEventListener('click', calculatePrice);
