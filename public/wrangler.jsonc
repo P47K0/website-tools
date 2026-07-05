@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tools",
-  "main": "index.js",                 // ← Add this line
+  "main": "src/index.js",
   "compatibility_date": "2026-07-05",
   "observability": {
     "enabled": true
