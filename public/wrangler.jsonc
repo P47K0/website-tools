@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tools",
+  "main": "index.js",                 // ← Add this line
   "compatibility_date": "2026-07-05",
   "observability": {
     "enabled": true
@@ -11,7 +12,7 @@
 
   "assets": {
     "directory": ".",
-    "binding": "ASSETS"          // Required for env.ASSETS
+    "binding": "ASSETS"
   },
 
   "d1_databases": [
